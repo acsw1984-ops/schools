@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atribord & Asociados — Programa de Colaboración con Centros Educativos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #1B4F8A;
+    --navy-dark: #0f2f55;
+    --navy-mid: #2E6BAD;
+    --gold: #C8993A;
+    --gold-light: #F0D080;
+    --cream: #FAF7F2;
+    --cream-mid: #F0EAE0;
+    --white: #ffffff;
+    --text: #1a1a1a;
+    --text-mid: #444;
+    --text-light: #777;
+    --radius: 4px;
+    --radius-lg: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--navy-dark);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold-light); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy-dark);
+    display: flex; align-items: center; justify-content: center;
+    padding: 120px 2rem 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.012) 40px,
+      rgba(255,255,255,0.012) 41px
+    );
+  }
+  .hero-inner {
+    max-width: 860px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.9s ease both;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid rgba(200,153,58,0.4);
+    padding: 0.35rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+  .hero-cta {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    padding: 0.85rem 2.2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .hero-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── SECTION CHROME ── */
+  section { padding: 100px 2rem; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--navy-mid);
+    margin-bottom: 0.5rem;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--navy-dark);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--navy);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ── ABOUT ── */
+  #sobre { background: var(--white); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-lead {
+    font-size: 1.1rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+  .spec-list { list-style: none; }
+  .spec-list li {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--cream-mid);
+    font-size: 0.95rem;
+    color: var(--text-mid);
+  }
+  .spec-list li:last-child { border-bottom: none; }
+  .spec-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0; margin-top: 8px;
+  }
+  .about-card {
+    background: var(--navy-dark);
+    color: var(--white);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+  }
+  .about-card h3 { color: var(--gold-light); font-size: 1.1rem; margin-bottom: 1rem; }
+  .about-card p { color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.7; }
+
+  /* ── WHY ── */
+  #por-que { background: var(--cream); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .why-card {
+    background: var(--white);
+    border: 1px solid var(--cream-mid);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .why-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(27,79,138,0.1); }
+  .why-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--cream-mid);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+  .why-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .why-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.65; }
+
+  /* ── LEGAL ── */
+  #legal { background: var(--white); }
+  .legal-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+  .legal-table thead th {
+    background: var(--navy-dark);
+    color: var(--white);
+    text-align: left;
+    padding: 1rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .legal-table tbody tr { border-bottom: 1px solid var(--cream-mid); }
+  .legal-table tbody tr:hover { background: var(--cream); }
+  .legal-table td {
+    padding: 1rem 1.2rem;
+    vertical-align: top;
+    font-size: 0.9rem;
+  }
+  .legal-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    white-space: nowrap;
+    width: 200px;
+  }
+  .legal-table td:last-child { color: var(--text-mid); }
+
+  /* ── METHODOLOGY ── */
+  #metodologia { background: var(--navy-dark); }
+  #metodologia .section-label { color: var(--gold-light); opacity: 0.8; }
+  #metodologia h2 { color: var(--white); }
+  .method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+  .method-block { }
+  .method-block h3 {
+    color: var(--gold-light);
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(200,153,58,0.25);
+    padding-bottom: 0.5rem;
+  }
+  .method-block p { color: rgba(255,255,255,0.7); font-size: 0.92rem; line-height: 1.75; }
+  .session-steps { list-style: none; margin-top: 1rem; }
+  .session-steps li {
+    display: flex; gap: 1rem; align-items: flex-start;
+    margin-bottom: 0.8rem;
+  }
+  .step-badge {
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-size: 0.7rem; font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    flex-shrink: 0; margin-top: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .session-steps li span:last-child { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+
+  /* ── OFERTA ── */
+  #oferta { background: var(--cream); }
+  .offer-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .offer-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border-top: 4px solid var(--navy);
+  }
+  .offer-card.featured { border-top-color: var(--gold); }
+  .offer-badge {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--navy-dark); color: var(--white);
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+    margin-bottom: 0.8rem;
+  }
+  .offer-card.featured .offer-badge { background: var(--gold); color: var(--navy-dark); }
+  .offer-card h3 { font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .offer-card p { font-size: 0.9rem; color: var(--text-mid); }
+
+  /* ── WORKSHOPS TABLE ── */
+  #talleres { background: var(--white); }
+  .ws-table { width: 100%; border-collapse: collapse; margin-top: 2rem; font-size: 0.88rem; }
+  .ws-table thead th {
+    background: var(--navy);
+    color: var(--white);
+    text-align: left;
+    padding: 0.8rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .ws-table tbody tr { border-bottom: 1px solid var(--cream-mid); }
+  .ws-table tbody tr:hover { background: #F5F0E8; }
+  .ws-table td { padding: 0.9rem 1rem; vertical-align: top; }
+  .ws-table td:first-child {
+    font-weight: 600; color: var(--navy);
+    width: 160px;
+    font-size: 0.82rem;
+  }
+  .ws-table td:nth-child(2) { font-weight: 500; color: var(--text); }
+  .ws-table td:nth-child(3) { color: var(--text-mid); }
+  .ws-table td:nth-child(4) { color: var(--text-light); font-style: italic; }
+
+  /* ── AULA ── */
+  #aula { background: var(--cream); }
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+  .req-block h3 { font-size: 1rem; color: var(--navy); margin-bottom: 1rem; }
+  .req-list { list-style: none; }
+  .req-list li {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    font-size: 0.92rem; color: var(--text-mid);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--cream-mid);
+  }
+  .req-list li:last-child { border-bottom: none; }
+  .req-list li::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--navy-mid);
+    border-radius: 50%;
+    flex-shrink: 0; margin-top: 9px;
+  }
+  .req-dl { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1.5rem; font-size: 0.9rem; }
+  .req-dl dt { font-weight: 600; color: var(--navy); padding: 0.4rem 0; }
+  .req-dl dd { color: var(--text-mid); padding: 0.4rem 0; border-bottom: 1px solid var(--cream-mid); }
+
+  /* ── OUTCOMES ── */
+  #resultados { background: var(--white); }
+  .outcome-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2.5rem;
+  }
+  .outcome-col {
+    border-left: 3px solid var(--navy);
+    padding-left: 1.2rem;
+  }
+  .outcome-col:nth-child(2) { border-color: var(--gold); }
+  .outcome-col:nth-child(3) { border-color: var(--navy-mid); }
+  .outcome-col h3 { font-size: 1rem; margin-bottom: 1rem; }
+  .outcome-col ul { list-style: none; }
+  .outcome-col li {
+    font-size: 0.88rem; color: var(--text-mid);
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--cream-mid);
+  }
+  .outcome-col li:last-child { border-bottom: none; }
+
+  /* ── PRICING ── */
+  #tarifas { background: var(--cream); }
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .price-card {
+    background: var(--white);
+    border: 1px solid var(--cream-mid);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem;
+  }
+  .price-card h3 { font-size: 1rem; margin-bottom: 0.3rem; color: var(--navy-dark); }
+  .price-format { font-size: 0.82rem; color: var(--text-light); margin-bottom: 1.2rem; }
+  .price-tag {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--navy);
+    font-style: italic;
+  }
+  .price-note { font-size: 0.8rem; color: var(--text-light); margin-top: 2rem; font-style: italic; }
+
+  /* ── NEXT STEPS ── */
+  #contacto { background: var(--navy-dark); padding: 100px 2rem; }
+  #contacto .section-label { color: var(--gold-light); opacity: 0.8; }
+  #contacto h2 { color: var(--white); }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+  .step-list { list-style: none; }
+  .step-list li {
+    display: flex; gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+    align-items: flex-start;
+  }
+  .step-list li::before {
+    content: '→';
+    color: var(--gold);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .contact-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+  }
+  .contact-row {
+    display: flex; gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.9rem;
+  }
+  .contact-row:last-child { border-bottom: none; }
+  .contact-row dt { color: var(--gold-light); font-weight: 500; min-width: 140px; flex-shrink: 0; }
+  .contact-row dd { color: rgba(255,255,255,0.7); font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a1e36;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media (max-width: 720px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    .about-grid, .method-grid, .req-grid, .outcome-cols, .steps-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .ws-table td:nth-child(3), .ws-table td:nth-child(4) { display: none; }
+    .legal-table td:first-child { white-space: normal; width: auto; }
+    section { padding: 60px 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Atribord <span>&</span> Asociados</a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre nosotros</a></li>
+    <li><a href="#metodologia">Metodología</a></li>
+    <li><a href="#talleres">Talleres</a></li>
+    <li><a href="#tarifas">Tarifas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Programa de colaboración con centros educativos</div>
+    <h1>El inglés que <em>transforma</em><br>el currículo de tu centro</h1>
+    <p class="hero-sub">Talleres transversales, preparación Cambridge y clubs de inglés extraescolares, impartidos directamente en tu instituto.</p>
+    <a href="#contacto" class="hero-cta">Solicitar información</a>
+  </div>
+</section>
+
+<!-- SOBRE NOSOTROS -->
+<section id="sobre">
+  <div class="container">
+    <div class="about-grid reveal">
+      <div>
+        <p class="section-label">Quiénes somos</p>
+        <h2>Una academia de inglés con vocación educativa</h2>
+        <p class="about-lead">Atribord &amp; Asociados es una academia de inglés de titularidad privada con sede en Madrid, dedicada a impartir enseñanza de idiomas de alta calidad mediante una metodología comunicativa, dirigida a alumnos de todas las edades.</p>
+        <p style="color: var(--text-mid); font-size:0.95rem; margin-bottom:1.5rem;">Nuestro equipo de profesores nativos y con nivel nativo trabaja para crear experiencias de aprendizaje dinámicas y aplicadas al mundo real, que van más allá del aula tradicional.</p>
+        <ul class="spec-list">
+          <li><span class="spec-dot"></span>Inglés general para niños, jóvenes y adultos</li>
+          <li><span class="spec-dot"></span>Preparación Cambridge (Young Learners hasta Advanced)</li>
+          <li><span class="spec-dot"></span>Talleres AICLE/CLIL para asignaturas de Secundaria</li>
+          <li><span class="spec-dot"></span>Clubs de inglés extraescolares y programas de ampliación</li>
+        </ul>
+      </div>
+      <div>
+        <div class="about-card">
+          <h3>Por qué ir al instituto</h3>
+          <p>Nuestro Programa de Colaboración ha sido diseñado específicamente para complementar el currículo vigente en institutos de ESO y Bachillerato de toda la Comunidad de Madrid, llevando sesiones flexibles y alineadas directamente a vuestros alumnos, en vuestras propias instalaciones.</p>
+        </div>
+        <div style="margin-top:1.5rem; background:var(--cream); border-radius:var(--radius-lg); padding:1.8rem; border:1px solid var(--cream-mid);">
+          <p class="section-label" style="margin-bottom:0.5rem">Sin esfuerzo para el centro</p>
+          <p style="font-size:0.9rem; color:var(--text-mid);">Planificamos, preparamos e impartimos todas las sesiones. El profesorado del centro no necesita hacer ninguna preparación adicional.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUÉ -->
+<section id="por-que">
+  <div class="container">
+    <p class="section-label reveal">¿Por qué colaborar?</p>
+    <h2 class="reveal">Una solución práctica y sin complicaciones</h2>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-num">01</div>
+        <h3>Llave en mano</h3>
+        <p>Todas las sesiones planificadas, preparadas e impartidas por nuestro equipo. Sin fotocopias ni preparación extra para vuestros docentes.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">02</div>
+        <h3>Alineado con la LOMLOE</h3>
+        <p>Nuestro enfoque respalda los objetivos del currículo nacional y el programa bilingüe de la Comunidad de Madrid.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">03</div>
+        <h3>Adaptado al centro</h3>
+        <p>Las sesiones se ajustan a los grupos de nivel, los cursos y las necesidades de horario de cada instituto.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">04</div>
+        <h3>Totalmente autorizado</h3>
+        <p>Todos nuestros docentes cuentan con certificado de antecedentes penales vigente y están plenamente habilitados para trabajar con menores.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEGAL -->
+<section id="legal">
+  <div class="container">
+    <p class="section-label reveal">Garantías legales</p>
+    <h2 class="reveal">Cumplimiento legal y protección de menores</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:640px; margin-bottom:0.5rem;">El bienestar y la seguridad de vuestros alumnos son nuestra prioridad absoluta. Operamos en pleno cumplimiento de la legislación española en materia de trabajo con menores.</p>
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="legal-table">
+        <thead>
+          <tr>
+            <th style="width:200px">Requisito</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Certificado de Antecedentes Penales</td>
+            <td>Todos los docentes cuentan con el Certificado de Antecedentes Penales (delitos de naturaleza sexual) en vigor, tal y como exige la Ley Orgánica 8/2021 (LOPIVI). Los certificados se renuevan cada dos años.</td>
+          </tr>
+          <tr>
+            <td>Protección de Datos</td>
+            <td>Cumplimiento íntegro del RGPD y la Ley Orgánica 3/2018 (LOPDGDD). No se recogen ni tratan datos personales de menores sin los consentimientos oportunos.</td>
+          </tr>
+          <tr>
+            <td>Titulaciones</td>
+            <td>Todo el profesorado posee titulaciones docentes reconocidas (CELTA, DELTA, PGCE o equivalente) y/o acreditación oficial de Cambridge como examinador o especialista en preparación de exámenes.</td>
+          </tr>
+          <tr>
+            <td>Seguro</td>
+            <td>Disponemos de seguro de responsabilidad civil profesional y general que cubre todas las actividades realizadas en las instalaciones del centro.</td>
+          </tr>
+          <tr>
+            <td>Acuerdo con el Centro</td>
+            <td>Se firmará un acuerdo de prestación de servicios antes del inicio de las sesiones, con responsabilidades, calendario, condiciones de cancelación y condiciones de pago.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGÍA -->
+<section id="metodologia">
+  <div class="container">
+    <p class="section-label reveal">Cómo trabajamos</p>
+    <h2 class="reveal">Nuestra metodología</h2>
+    <div class="method-grid">
+      <div class="method-block reveal">
+        <h3>Enseñanza Comunicativa (CLT)</h3>
+        <p>Todas las sesiones se fundamentan en el enfoque comunicativo (CLT), avalado por el British Council, Cambridge Assessment English y el Marco Común Europeo de Referencia (MCER). Priorizamos la comunicación significativa frente a los ejercicios gramaticales mecánicos.</p>
+      </div>
+      <div class="method-block reveal">
+        <h3>AICLE / CLIL</h3>
+        <p>En los talleres transversales incorporamos los principios del Aprendizaje Integrado de Contenidos y Lenguas (AICLE), impartiendo los contenidos de las asignaturas en inglés. El alumnado desarrolla simultáneamente sus conocimientos curriculares y su competencia en inglés.</p>
+      </div>
+      <div class="method-block reveal" style="grid-column: 1 / -1;">
+        <h3>Estructura de cada sesión</h3>
+        <ul class="session-steps">
+          <li><span class="step-badge">1</span><span><strong style="color:rgba(255,255,255,0.9)">Activación</strong> — Los alumnos recuperan conocimientos previos y conectan con el tema.</span></li>
+          <li><span class="step-badge">2</span><span><strong style="color:rgba(255,255,255,0.9)">Presentación</strong> — Nuevo contenido o lengua a través de materiales auténticos (artículos, vídeos, infografías, fuentes primarias).</span></li>
+          <li><span class="step-badge">3</span><span><strong style="color:rgba(255,255,255,0.9)">Práctica</strong> — Tareas guiadas que refuerzan la comprensión y la nueva lengua.</span></li>
+          <li><span class="step-badge">4</span><span><strong style="color:rgba(255,255,255,0.9)">Producción</strong> — Los alumnos utilizan la nueva lengua de forma creativa y comunicativa.</span></li>
+          <li><span class="step-badge">5</span><span><strong style="color:rgba(255,255,255,0.9)">Reflexión</strong> — Breve consolidación y evaluación formativa.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<section id="oferta">
+  <div class="container">
+    <p class="section-label reveal">Servicios</p>
+    <h2 class="reveal">Qué ofrecemos</h2>
+    <div class="offer-cards">
+      <div class="offer-card reveal">
+        <div class="offer-badge">Extraescolar</div>
+        <h3>Club de Inglés</h3>
+        <p>Sesión semanal distendida para alumnos que desean consolidar su confianza y fluidez. Debates, teatro, escritura creativa, juegos y proyectos culturales. Todos los niveles.</p>
+      </div>
+      <div class="offer-card reveal">
+        <div class="offer-badge">Exámenes</div>
+        <h3>Preparación Cambridge</h3>
+        <p>Preparación intensiva desde KET y PET hasta FCE y CAE. Las cuatro destrezas, técnica de examen y gestión del tiempo. Grupos por nivel.</p>
+      </div>
+      <div class="offer-card featured reveal">
+        <div class="offer-badge">Oferta principal</div>
+        <h3>Talleres Transversales</h3>
+        <p>Talleres puntuales o series temáticas vinculados directamente al currículo de la ESO y el Bachillerato, en inglés. Catálogo de 10 talleres o diseño a medida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TALLERES -->
+<section id="talleres">
+  <div class="container">
+    <p class="section-label reveal">Catálogo completo</p>
+    <h2 class="reveal">Talleres de contenido transversal</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:640px; margin-bottom:0.5rem;">Cada taller puede ofrecerse como sesión única (55-60 min) o como serie temática. También diseñamos talleres a medida.</p>
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="ws-table">
+        <thead>
+          <tr>
+            <th>Área temática</th>
+            <th>Título del taller</th>
+            <th>Descripción</th>
+            <th>Resultados de aprendizaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lengua y Literatura Inglesa</td>
+            <td>Shakespeare en 60 Minutos</td>
+            <td>Exploración interactiva de un texto Shakespeare con fragmentos dramatizados, análisis de personajes y debate sobre temas del siglo XXI.</td>
+            <td>Analizar lenguaje literario; interpretar fragmentos dramáticos; desarrollar pensamiento crítico en inglés.</td>
+          </tr>
+          <tr>
+            <td>Lengua y Literatura Inglesa</td>
+            <td>El Arte de la Persuasión</td>
+            <td>Los alumnos analizan discursos, anuncios y editoriales, y desarrollan sus propias habilidades persuasivas mediante técnicas retóricas.</td>
+            <td>Identificar recursos retóricos; redactar y exponer un discurso persuasivo; evaluar tono y registro.</td>
+          </tr>
+          <tr>
+            <td>Ciencias Naturales</td>
+            <td>El Cambio Climático: la Ciencia en Inglés</td>
+            <td>Exploración en inglés de la ciencia del cambio climático usando infografías, artículos y datos auténticos.</td>
+            <td>Vocabulario medioambiental; interpretar datos; construir argumento oral basado en evidencias.</td>
+          </tr>
+          <tr>
+            <td>Ciencias Naturales</td>
+            <td>El Cuerpo Humano: Sistemas y Funciones</td>
+            <td>Recorrido bilingüe por los sistemas circulatorio, respiratorio y nervioso mediante diagramas y casos prácticos.</td>
+            <td>Describir procesos biológicos en inglés; usar vocabulario AICLE con precisión.</td>
+          </tr>
+          <tr>
+            <td>Ciencias Sociales / Historia</td>
+            <td>Puntos de Inflexión en la Historia</td>
+            <td>Análisis de un hito histórico clave (Revolución Industrial, IIGM, descolonización…) a través de fuentes primarias y debate guiado.</td>
+            <td>Analizar fuentes primarias en inglés; expresar causa y efecto; exponer argumento histórico.</td>
+          </tr>
+          <tr>
+            <td>Ciencias Sociales / Geografía</td>
+            <td>Ciudades Globales: Urbanización y Migración</td>
+            <td>Taller basado en datos sobre tendencias de urbanización y patrones migratorios con foco en inglés académico.</td>
+            <td>Interpretar mapas y estadísticas en inglés; redactar párrafo analítico estructurado.</td>
+          </tr>
+          <tr>
+            <td>Economía</td>
+            <td>Cómo Funcionan los Mercados</td>
+            <td>Introducción accesible a oferta y demanda, fallos del mercado y globalización mediante casos reales en inglés.</td>
+            <td>Explicar conceptos económicos en inglés; analizar un caso real; usar registro académico formal.</td>
+          </tr>
+          <tr>
+            <td>Economía</td>
+            <td>Emprendedores e Innovación</td>
+            <td>Los alumnos conocen emprendedores de referencia y presentan sus propias ideas de negocio en inglés.</td>
+            <td>Estructurar y presentar un pitch; usar vocabulario de inglés de negocios.</td>
+          </tr>
+          <tr>
+            <td>Transversal</td>
+            <td>El Modelo de las Naciones Unidas</td>
+            <td>Simulación completa de un debate en la ONU sobre un asunto global, conducida íntegramente en inglés.</td>
+            <td>Lenguaje formal de debate; redactar documento de posición; colaborar bajo presión de tiempo.</td>
+          </tr>
+          <tr>
+            <td>Transversal</td>
+            <td>¿Hecho o Ficción? Alfabetización Mediática</td>
+            <td>Los alumnos evalúan fuentes, identifican sesgos y practican fact-checking con medios en inglés.</td>
+            <td>Distinguir fuentes fiables; identificar sesgo y perspectiva; debatir en inglés formal.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- AULA Y MATERIALES -->
+<section id="aula">
+  <div class="container">
+    <p class="section-label reveal">Logística</p>
+    <h2 class="reveal">Instalaciones y materiales</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:640px;">Nuestras sesiones están diseñadas para ser flexibles y requerir el mínimo esfuerzo logístico. Aportamos todo lo necesario y nos adaptamos a las instalaciones existentes.</p>
+    <div class="req-grid">
+      <div class="req-block reveal">
+        <h3>Lo que aportamos nosotros</h3>
+        <ul class="req-list">
+          <li>Todos los materiales del taller, impresos y digitales</li>
+          <li>Material especializado para actividades concretas (altavoces, accesorios para role play…)</li>
+          <li>Materiales de práctica Cambridge (exámenes oficiales y modelos)</li>
+          <li>Fichas de autoevaluación y hojas de seguimiento del progreso</li>
+        </ul>
+      </div>
+      <div class="req-block reveal">
+        <h3>Lo que solicitamos al centro</h3>
+        <dl class="req-dl">
+          <dt>Aula</dt>
+          <dd>Aula estándar con mesas y sillas móviles</dd>
+          <dt>Proyección</dt>
+          <dd>Proyector o PDI con HDMI o pantalla compartida. Nosotros aportamos portátil.</dd>
+          <dt>Internet</dt>
+          <dd>Wi-Fi básico (adaptable sin conexión si es necesario)</dd>
+          <dt>Impresión</dt>
+          <dd>Aprox. 1-2 páginas B/N por alumno y sesión</dd>
+          <dt>Coordinación</dt>
+          <dd>Persona de contacto para horarios y grupos de nivel</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados">
+  <div class="container">
+    <p class="section-label reveal">Qué se consigue</p>
+    <h2 class="reveal">Resultados de aprendizaje</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:640px; margin-bottom:0.5rem;">Todas las sesiones tienen resultados claros y medibles, alineados con el MCER y los objetivos de la LOMLOE.</p>
+    <div class="outcome-cols">
+      <div class="outcome-col reveal">
+        <h3>Competencia en inglés</h3>
+        <ul>
+          <li>Mayor confianza comunicativa y espontaneidad</li>
+          <li>Vocabulario académico, específico y cotidiano ampliado</li>
+          <li>Mejora gramatical y sintáctica oral y escrita</li>
+          <li>Mayor solidez en comprensión lectora auténtica</li>
+          <li>Las cuatro destrezas del MCER desarrolladas</li>
+        </ul>
+      </div>
+      <div class="outcome-col reveal">
+        <h3>Preparación Cambridge</h3>
+        <ul>
+          <li>Familiarización con todos los tipos de tarea</li>
+          <li>Mejora de técnica de examen y gestión del tiempo</li>
+          <li>Progreso medible hacia la certificación objetivo</li>
+          <li>Práctica estructurada en las cuatro destrezas</li>
+        </ul>
+      </div>
+      <div class="outcome-col reveal">
+        <h3>Competencias del siglo XXI</h3>
+        <ul>
+          <li>Implicación curricular a través del inglés</li>
+          <li>Pensamiento crítico, analítico e investigador</li>
+          <li>Trabajo colaborativo y por proyectos</li>
+          <li>Alfabetización mediática en inglés</li>
+          <li>Conciencia intercultural y ciudadanía global</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFAS -->
+<section id="tarifas">
+  <div class="container">
+    <p class="section-label reveal">Precios</p>
+    <h2 class="reveal">Tarifas y modalidades</h2>
+    <p class="reveal" style="color:var(--text-mid); max-width:640px;">Ofrecemos estructuras de precios flexibles adaptadas a las necesidades y al presupuesto de cada centro. Contáctenos para una propuesta personalizada.</p>
+    <div class="price-grid">
+      <div class="price-card reveal">
+        <h3>Taller puntual</h3>
+        <p class="price-format">Sesión 55-60 min · hasta 30 alumnos</p>
+        <div class="price-tag">Por confirmar</div>
+      </div>
+      <div class="price-card reveal">
+        <h3>Serie de talleres (5 sesiones)</h3>
+        <p class="price-format">5 × 55-60 min · mismo grupo-clase</p>
+        <div class="price-tag">Por confirmar</div>
+      </div>
+      <div class="price-card reveal">
+        <h3>Club de Inglés Extraescolar</h3>
+        <p class="price-format">Semanal, 60 min · hasta 15 alumnos · por trimestre</p>
+        <div class="price-tag">Por confirmar</div>
+      </div>
+      <div class="price-card reveal">
+        <h3>Preparación Cambridge</h3>
+        <p class="price-format">2× semanal, 60 min · hasta 12 alumnos/nivel · por trimestre</p>
+        <div class="price-tag">Por confirmar</div>
+      </div>
+      <div class="price-card reveal" style="grid-column: 1 / -1; border-top-color: var(--gold); border-top: 3px solid var(--gold);">
+        <h3>Colaboración con el Centro (anual)</h3>
+        <p class="price-format">Programa a medida para todos los cursos y trimestres — incluye todos los servicios anteriores</p>
+        <div class="price-tag">Por confirmar</div>
+      </div>
+    </div>
+    <p class="price-note reveal">Todos los precios sin IVA. Descuentos disponibles para reservas de varios grupos o múltiples sesiones. Facilitamos presupuesto detallado tras reunión inicial.</p>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="container">
+    <p class="section-label reveal">Próximos pasos</p>
+    <h2 class="reveal">Hablemos</h2>
+    <div class="steps-grid">
+      <div>
+        <p style="color:rgba(255,255,255,0.7); margin-bottom:1.5rem; font-size:0.95rem;">Nos encantaría concertar una reunión para analizar cómo nuestro programa puede servir mejor a vuestro alumnado. En esa reunión podemos:</p>
+        <ul class="step-list reveal">
+          <li>Realizar una evaluación de nivel gratuita a un grupo de muestra</li>
+          <li>Presentar una sesión de taller para que vuestro equipo vea nuestra metodología en acción</li>
+          <li>Diseñar un programa a medida adaptado al currículo y a vuestras prioridades de exámenes</li>
+          <li>Responder a cualquier pregunta sobre protección de menores, logística u horarios</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <dl style="display:block">
+          <div class="contact-box">
+            <div class="contact-row"><dt>Academia</dt><dd>Atribord &amp; Asociados</dd></div>
+            <div class="contact-row"><dt>Correo electrónico</dt><dd>[por añadir]</dd></div>
+            <div class="contact-row"><dt>Teléfono</dt><dd>[por añadir]</dd></div>
+            <div class="contact-row"><dt>Web / Redes Sociales</dt><dd>[por añadir]</dd></div>
+            <div class="contact-row"><dt>Dirección</dt><dd>[por añadir]</dd></div>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Atribord &amp; Asociados · Academia de Inglés · Madrid &nbsp;|&nbsp; Curso 2025–2026</p>
+  <p style="margin-top:0.5rem; font-size:0.72rem;">Todos los precios sin IVA &nbsp;·&nbsp; <span>©</span> Atribord &amp; Asociados</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
